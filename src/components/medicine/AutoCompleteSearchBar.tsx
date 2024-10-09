@@ -13,7 +13,6 @@ export const AutoCompleteSearchBar = ({
         proposedMedecines.map((medicine: MedicineType) => {
             tmpMedicineNames.push(medicine.name);
         })
-        console.log(tmpMedicineNames);
         setMedicineNames(tmpMedicineNames);
     }, [proposedMedecines]);
 

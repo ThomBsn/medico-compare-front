@@ -1,11 +1,12 @@
 'use client'
 
 import { MedicineType } from "@/types/medicineTypes";
-import {Box, FormControl, InputLabel, MenuItem, Select} from "@mui/material";
+import { Box } from "@mui/material";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge"
 import { Pill } from "lucide-react";
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 
 export const FilteredList = ({
         filteredMedicineList,
@@ -33,61 +34,57 @@ export const FilteredList = ({
 
     return (
         <>
-            <Box sx={{ p: 2, display: 'flex', gap: '1rem' }}>
-                <FormControl fullWidth>
-                    <InputLabel id="demo-simple-select-label">Laboratoire</InputLabel>
-                    <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        value={companies}
-                        label="Laboratoire"
-                        // onChange={(e) => {}
-                        // variant={"standard"}
-                    >
+            <Box sx={{p: 2, display: 'flex', gap: '1rem'}}>
+                <h3 className="text-md font-bold my-auto ml-20 w-[280px]">Filtres : </h3>
+                <Select>
+                    <SelectTrigger className="w-[280px]">
+                        <SelectValue placeholder="Laboratoire"/>
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem value="empty"></SelectItem>
                         {
                             companies.map((company: string) => {
-
+                                const tmpFormat = company.charAt(0).toUpperCase() + company.slice(1).toLowerCase();
                                 return (
-                                    <MenuItem key={company}>{company}</MenuItem>
+                                    <SelectItem value={tmpFormat.toLowerCase()} key={tmpFormat.toLowerCase()}>{tmpFormat}</SelectItem>
                                 );
                             })
                         }
-                    </Select>
-                </FormControl>
-                <FormControl fullWidth>
-                    <InputLabel id="demo-simple-select-label">Forme</InputLabel>
-                    <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        value={forms}
-                        label="Forme"
-                        // onChange={(e) => {setAdministration(e.target.value)}}
-                        // variant={"standard"}
-                    >
-                        {forms.map((form: string) => {
-                            return (
-                                <MenuItem key={form}>{form}</MenuItem>
-                            )
-                        })}
-                    </Select>
-                </FormControl>
-                <FormControl fullWidth>
-                    <InputLabel id="demo-simple-select-label">Moyen Administration</InputLabel>
-                    <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        value={administrations}
-                        label="Moyen Administration"
-                        // onChange={(e) => {setAdministration(e.target.value)}}
-                        // variant={"standard"}
-                    >
-                        {administrations.map((administration: string) => {
-                            return (
-                                <MenuItem key={administration}>{administration}</MenuItem>
-                            )
-                        })}
-                    </Select>
-                </FormControl>
+                    </SelectContent>
+                </Select>
+                <Select>
+                    <SelectTrigger className="w-[280px]">
+                        <SelectValue placeholder="Forme"/>
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem value="empty"></SelectItem>
+                        {
+                            forms.map((form: string) => {
+                                const tmpFormat = form.charAt(0).toUpperCase() + form.slice(1).toLowerCase();
+                                return (
+                                    <SelectItem value={tmpFormat.toLowerCase()} key={tmpFormat.toLowerCase()}>{tmpFormat}</SelectItem>
+                                );
+                            })
+                        }
+                    </SelectContent>
+                </Select>
+                <Select>
+                    <SelectTrigger className="w-[280px]">
+                        <SelectValue placeholder="Administration"/>
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem value="empty"></SelectItem>
+                        {
+                            administrations.map((administration: string) => {
+                                const tmpFormat = administration.charAt(0).toUpperCase() + administration.slice(1).toLowerCase();
+                                return (
+                                    <SelectItem value={tmpFormat.toLowerCase()} key={tmpFormat.toLowerCase()}>{tmpFormat}</SelectItem>
+                                );
+                            })
+                        }
+                    </SelectContent>
+                </Select>
+
             </Box>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {filteredMedicineList.map((medicine: MedicineType) => (

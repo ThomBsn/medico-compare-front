@@ -20,7 +20,7 @@ export const AutoCompleteSearchBar = ({
     return (
         <Box sx={{ m: 2 }}>
             <Autocomplete
-                disablePortal
+                freeSolo
                 options={medicineNames}
                 sx={{ width: 300 }}
                 renderInput={(params) => <TextField {...params} label="Medicine" />}

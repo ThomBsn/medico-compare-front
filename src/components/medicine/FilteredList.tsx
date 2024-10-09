@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge"
 import { Pill } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 export const FilteredList = ({
         filteredMedicineList,
@@ -16,6 +17,7 @@ export const FilteredList = ({
     const [administrations, setAdministrations] = useState<string[]>([]);
     const [companies, setCompanies] = useState<string[]>([]);
     const [forms, setForms] = useState<string[]>([]);
+    const router = useRouter();
 
     useEffect(() => {
         const allCompanies: string[] = filteredMedicineList.map((medicine: MedicineType) => medicine.company);
@@ -33,8 +35,8 @@ export const FilteredList = ({
     }, [filteredMedicineList]);
 
     return (
-        <>
-            <Box sx={{p: 2, display: 'flex', gap: '1rem'}}>
+        <div>
+           {/* <Box sx={{p: 2, display: 'flex', gap: '1rem'}}>
                 <h3 className="text-md font-bold my-auto ml-20 w-[280px]">Filtres : </h3>
                 <Select>
                     <SelectTrigger className="w-[280px]">
@@ -84,11 +86,13 @@ export const FilteredList = ({
                         }
                     </SelectContent>
                 </Select>
-
-            </Box>
+            </Box>*/}
+                      <div className="max-w-3xl mx-auto text-center pb-12 md:pb-16">
+                      <h1 className="text-xl mb-2 text-gray-800">Liste de médicaments</h1>
+                      </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {filteredMedicineList.map((medicine: MedicineType) => (
-                    <Card key={medicine.id}>
+                    <Card key={medicine.id} onClick={() => router.push(`/medicine/${medicine.CIS_code}`)}>
                         <CardHeader>
                             <CardTitle className="flex items-center gap-2">
                                 <Pill className="h-5 w-5" />
@@ -108,9 +112,9 @@ export const FilteredList = ({
             </div>
             <div>
                 {filteredMedicineList.length === 0 && (
-                    <p className="text-center text-gray-500 mt-4">No medicines found matching your search.</p>
+                    <p className="text-center text-gray-500 mt-4">Loading...</p>
                 )}
             </div>
-        </>
+            </div>
     );
 }

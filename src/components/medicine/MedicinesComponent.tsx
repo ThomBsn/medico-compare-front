@@ -1,5 +1,5 @@
 import {MedicineType} from "@/types/medicineTypes";
-import {AutoCompleteSearchBar} from "@/components/medicine/AutoCompleteSearchBar";
+import MedicineAutocomplete from "@/components/medicine/AutoCompleteSearchBar";
 import {FilteredList} from "@/components/medicine/FilteredList";
 
 export const MedicinesComponent = ({
@@ -7,7 +7,6 @@ export const MedicinesComponent = ({
     }: {allMedicines: MedicineType[]}) => {
     return (
         <>
-            <AutoCompleteSearchBar proposedMedecines={allMedicines}/>
             <FilteredList filteredMedicineList={allMedicines}/>
         </>
     )

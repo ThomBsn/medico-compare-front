@@ -1,118 +1,116 @@
 'use client'
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Pill, Clock, AlertTriangle, Ban, Shuffle } from "lucide-react"
-import { useParams } from "next/navigation";
-import {Button} from "@mui/material";
+import { useParams, useRouter } from "next/navigation";
+import { Button, Chip, CircularProgress, Typography } from "@mui/material";
+import { MedicineType } from "@/types/medicineTypes";
+import { useState, useEffect } from "react";
 
 export default function Component() {
     const params = useParams();
-    // Dans un cas réel, ces données proviendraient d'une API ou d'une base de données
-    const medicament = {
-        nom: "Paracétamol",
-        description: "Analgésique et antipyrétique utilisé pour soulager la douleur et réduire la fièvre.",
-        categorie: "Analgésique",
-        posologie: "500 à 1000 mg toutes les 4 à 6 heures, ne pas dépasser 4000 mg par jour.",
-        administration: "Voie orale. À prendre avec un grand verre d'eau, de préférence au cours des repas.",
-        effetsSecondaires: [
-            "Réactions allergiques (rares)",
-            "Troubles hépatiques en cas de surdosage",
-            "Nausées ou vomissements (peu fréquents)"
-        ],
-        contreIndications: [
-            "Allergie au paracétamol",
-            "Maladie grave du foie",
-            "Consommation excessive d'alcool"
-        ],
-        interactions: [
-            "Warfarine (surveillance accrue nécessaire)",
-            "Certains antiépileptiques",
-            "Consommation régulière et importante d'alcool"
-        ]
-    }
+    const [medicine, setMedicine] = useState<MedicineType>();
+    const [loading, setLoading] = useState<boolean>(true);
+    const router = useRouter();
+
+    useEffect(() => {
+        fetch(`https://medico-compare-back.vercel.app/specificMedicine/medicine/${params.id}`, { headers: { 'Content-Type': 'application/json' } })
+          .then((response) => response.json())
+          .then((data) => {
+            setMedicine(data.result);
+            setLoading(false);
+          })
+          .catch((error) => {
+            console.error('Error fetching medicine:', error);
+            setLoading(false);
+          });
+      }, [params.id]);
+    
+      if (loading) {
+        return (
+          <div className="container mx-auto p-4 max-w-4xl text-center">
+            <CircularProgress />
+          </div>
+        );
+      }
 
     return (
-        <div className="container mx-auto p-4 max-w-4xl">
-            <Button variant="outlined" sx={{color: "black", borderColor: "black"}} className="mb-4" href="/medicine">
-                &larr; Retour à la recherche
-            </Button>
-
-            <Card className="mb-6">
-                <CardHeader>
-                    <div className="flex items-center justify-between">
-                        <CardTitle className="text-3xl font-bold flex items-center gap-2">
-                            <Pill className="h-8 w-8" />
-                            {medicament.nom}
-                        </CardTitle>
-                        <Badge variant="secondary" className="text-lg">{medicament.categorie}</Badge>
+            <div className="container mx-auto py-8 px-4">
+              {/* Header */}
+              <div className="mb-6">
+                <h1 className="text-2xl font-bold text-gray-800 mb-4">
+                  {medicine?.name ?? "non renseignée"}
+                </h1>
+                <p className="text-gray-600">CIS Code: {medicine?.CIS_code ?? "non renseignée"}</p>
+                <p className="text-gray-600">EU Number: {medicine?.EU_number ?? "non renseignée"}</p>
+              </div>
+        
+              {/* Medicine Information */}
+              <Card className="shadow-lg">
+                <CardContent>
+                  <Typography variant="h6" className="font-semibold text-gray-700 mb-4">
+                    Information sur le médicament
+                  </Typography>
+        
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div>
+                      <Typography variant="body1" className="mb-2">
+                        <span className="font-semibold">Forme:</span> {medicine?.form ?? "non renseignée"}
+                      </Typography>
+                      <Typography variant="body1" className="mb-2">
+                        <span className="font-semibold">Administration:</span>{" "}
+                        {medicine?.administration ?? "non renseignée"}
+                      </Typography>
+                      <Typography variant="body1" className="mb-2">
+                        <span className="font-semibold">Autorisation:</span>{" "}
+                        {medicine?.autorisation?.name ?? "non renseignée"}
+                      </Typography>
+                      <Typography variant="body1" className="mb-2">
+                        <span className="font-semibold">Date d'AMM:</span>{" "}
+                        {medicine?.AMM_date ?? "non renseignée"}
+                      </Typography>
+                      <Typography variant="body1" className="mb-2">
+                        <span className="font-semibold">Commercialisé:</span>{" "}
+                        <Chip
+                          label={medicine?.commercialized ? "Oui" : "Non"}
+                          color={medicine?.commercialized ? "success" : "error"}
+                        />
+                      </Typography>
                     </div>
-                    <CardDescription className="text-lg">{medicament.description}</CardDescription>
-                </CardHeader>
-            </Card>
-
-            <div className="grid gap-6 md:grid-cols-2">
-                <Card>
-                    <CardHeader>
-                        <CardTitle className="flex items-center gap-2">
-                            <Clock className="h-5 w-5" />
-                            Posologie et Administration
-                        </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <p className="mb-2"><strong>Posologie :</strong> {medicament.posologie}</p>
-                        <p><strong>Administration :</strong> {medicament.administration}</p>
-                    </CardContent>
-                </Card>
-
-                <Card>
-                    <CardHeader>
-                        <CardTitle className="flex items-center gap-2">
-                            <AlertTriangle className="h-5 w-5" />
-                            Effets Secondaires
-                        </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <ul className="list-disc pl-5">
-                            {medicament.effetsSecondaires.map((effet, index) => (
-                                <li key={index}>{effet}</li>
-                            ))}
-                        </ul>
-                    </CardContent>
-                </Card>
-
-                <Card>
-                    <CardHeader>
-                        <CardTitle className="flex items-center gap-2">
-                            <Ban className="h-5 w-5" />
-                            Contre-indications
-                        </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <ul className="list-disc pl-5">
-                            {medicament.contreIndications.map((contreIndication, index) => (
-                                <li key={index}>{contreIndication}</li>
-                            ))}
-                        </ul>
-                    </CardContent>
-                </Card>
-
-                <Card>
-                    <CardHeader>
-                        <CardTitle className="flex items-center gap-2">
-                            <Shuffle className="h-5 w-5" />
-                            Interactions Médicamenteuses
-                        </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <ul className="list-disc pl-5">
-                            {medicament.interactions.map((interaction, index) => (
-                                <li key={index}>{interaction}</li>
-                            ))}
-                        </ul>
-                    </CardContent>
-                </Card>
+        
+                    <div>
+                      <Typography variant="body1" className="mb-2">
+                        <span className="font-semibold">Avis SMR:</span>{" "}
+                        {medicine?.avisSmr?.name ?? "non renseignée"}
+                      </Typography>
+                      <Typography variant="body1" className="mb-2">
+                        <span className="font-semibold">Avis ASMR:</span>{" "}
+                        {medicine?.avisAsmr?.name ?? "non renseignée"}
+                      </Typography>
+                      <Typography variant="body1" className="mb-2">
+                        <span className="font-semibold">Surveillance renforcée:</span>{" "}
+                        <Chip
+                          label={medicine?.reinforced_surveillance ? "Oui" : "Non"}
+                          color={medicine?.reinforced_surveillance ? "warning" : "default"}
+                        />
+                      </Typography>
+                      <Typography variant="body1" className="mb-2">
+                        <span className="font-semibold">Entreprise:</span>{" "}
+                        {medicine?.company ?? "non renseignée"}
+                      </Typography>
+                    </div>
+                  </div>
+        
+                  <div className="mt-6 text-center">
+                    <Button
+                      variant="contained"
+                      sx={{ backgroundColor: '#1a202c', color: 'white' }}
+                      onClick={() => router.push("/medicine")}
+                    >
+                      Rechercher un autre médicament
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
-        </div>
     )
 }

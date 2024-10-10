@@ -2,14 +2,15 @@
 import React from 'react';
 import { AppBar, Toolbar, Typography, Button } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import type { Metadata } from "next";
+import Image from 'next/image';
 import localFont from "next/font/local";
+import Logo from "@/components/ui/logo.png";
 import "./globals.css";
 import 'tailwindcss/tailwind.css';
 
 const useStyles = makeStyles({
   appBar: {
-    backgroundColor: '#1a202c', // Tailwind's gray-900
+    backgroundColor: '#1a202c',
   },
   title: {
     flexGrow: 1,
@@ -44,9 +45,7 @@ export default function RootLayout({
       >
         <AppBar position="static" className={classes.appBar}>
           <Toolbar>
-            <Typography variant="h6" className={classes.title}>
-              My App
-            </Typography>
+            <Image src={Logo} alt="Logo" width={160} height={160} className="absolute"/>
           </Toolbar>
         </AppBar>
         <div className="container mx-auto p-4">

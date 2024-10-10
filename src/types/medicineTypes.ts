@@ -2,6 +2,14 @@ type CustomName = {
     name: string
 }
 
+type avisAsmr = {
+    avis_asmr: string
+}
+
+type avisSmr = {
+    avis_smr: string
+}
+
 export type MedicineType = {
     id: string,
     CIS_code: string,
@@ -9,8 +17,8 @@ export type MedicineType = {
     form: string,
     administration: string,
     autorisation: CustomName,
-    avisAsmr: CustomName,
-    avisSmr: CustomName,
+    avisAsmr: avisAsmr,
+    avisSmr: avisSmr,
     commercialized: boolean,
     AMM_date: string,
     EU_number: string,

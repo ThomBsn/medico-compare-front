@@ -75,16 +75,20 @@ export default function Component() {
                           color={medicine?.commercialized ? "success" : "error"}
                         />
                       </Typography>
+                      <Typography variant="body1" className="mb-2">
+                        <span className="font-semibold">Autorisation:</span>{" "}
+                        {medicine?.autorisation.name ?? "non renseignée"}
+                      </Typography>
                     </div>
         
                     <div>
                       <Typography variant="body1" className="mb-2">
                         <span className="font-semibold">Avis SMR:</span>{" "}
-                        {medicine?.avisSmr?.name ?? "non renseignée"}
+                        {medicine?.avisSmr?.avis_smr ?? "non renseignée"}
                       </Typography>
                       <Typography variant="body1" className="mb-2">
                         <span className="font-semibold">Avis ASMR:</span>{" "}
-                        {medicine?.avisAsmr?.name ?? "non renseignée"}
+                        {medicine?.avisAsmr?.avis_asmr ?? "non renseignée"}
                       </Typography>
                       <Typography variant="body1" className="mb-2">
                         <span className="font-semibold">Surveillance renforcée:</span>{" "}

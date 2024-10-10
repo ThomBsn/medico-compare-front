@@ -7,6 +7,14 @@ import { MedicineType } from "@/types/medicineTypes";
 import { useState, useEffect } from "react";
 
 export default function Component() {
+  const authorizationColors: { [key: string]: "success" | "default" | "error" | "warning" | "secondary" } = {
+    "Autorisation active": "success",
+    "Autorisation archivée": "default",
+    "Autorisation abrogée": "error",
+    "Autorisation retirée": "warning",
+    "Autorisation suspendue": "secondary",
+  };
+
     const params = useParams();
     const [medicine, setMedicine] = useState<MedicineType>();
     const [loading, setLoading] = useState<boolean>(true);
@@ -50,54 +58,57 @@ export default function Component() {
                   <Typography variant="h6" className="font-semibold text-gray-700 mb-4">
                     Information sur le médicament
                   </Typography>
-        
+
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    <div>
-                      <Typography variant="body1" className="mb-2">
+                    <div className="gap-2">
+                      <Typography variant="body1" className="mb-4">
                         <span className="font-semibold">Forme:</span> {medicine?.form ?? "non renseignée"}
                       </Typography>
-                      <Typography variant="body1" className="mb-2">
+                      <Typography variant="body1" className="mb-4">
                         <span className="font-semibold">Administration:</span>{" "}
                         {medicine?.administration ?? "non renseignée"}
                       </Typography>
-                      <Typography variant="body1" className="mb-2">
+                      <Typography variant="body1" className="mb-4">
                         <span className="font-semibold">Autorisation:</span>{" "}
-                        {medicine?.autorisation?.name ?? "non renseignée"}
+                        <Chip
+                          label={medicine?.autorisation?.name ?? "non renseignée"}
+                          color={medicine?.autorisation?.name ? authorizationColors[medicine.autorisation.name] : "default"}
+                        />
                       </Typography>
-                      <Typography variant="body1" className="mb-2">
+                      <Typography variant="body1" className="mb-4">
                         <span className="font-semibold">Date d'AMM:</span>{" "}
                         {medicine?.AMM_date ?? "non renseignée"}
                       </Typography>
-                      <Typography variant="body1" className="mb-2">
+                      <Typography variant="body1" className="mb-4">
                         <span className="font-semibold">Commercialisé:</span>{" "}
                         <Chip
                           label={medicine?.commercialized ? "Oui" : "Non"}
                           color={medicine?.commercialized ? "success" : "error"}
                         />
                       </Typography>
-                      <Typography variant="body1" className="mb-2">
+                      <Typography variant="body1" className="mb-4">
                         <span className="font-semibold">Médicament générique:</span>{" "}
                         {medicine?.genericMedicine?.name ?? "non renseignée"}
                       </Typography>
                     </div>
         
                     <div>
-                      <Typography variant="body1" className="mb-2">
+                      <Typography variant="body1" className="mb-4">
                         <span className="font-semibold">Avis SMR:</span>{" "}
                         {medicine?.avisSmr?.avis_smr ?? "non renseignée"}
                       </Typography>
-                      <Typography variant="body1" className="mb-2">
+                      <Typography variant="body1" className="mb-4">
                         <span className="font-semibold">Avis ASMR:</span>{" "}
                         {medicine?.avisAsmr?.avis_asmr ?? "non renseignée"}
                       </Typography>
-                      <Typography variant="body1" className="mb-2">
+                      <Typography variant="body1" className="mb-4">
                         <span className="font-semibold">Surveillance renforcée:</span>{" "}
                         <Chip
                           label={medicine?.reinforced_surveillance ? "Oui" : "Non"}
                           color={medicine?.reinforced_surveillance ? "warning" : "default"}
                         />
                       </Typography>
-                      <Typography variant="body1" className="mb-2">
+                      <Typography variant="body1" className="mb-4">
                         <span className="font-semibold">Entreprise:</span>{" "}
                         {medicine?.company ?? "non renseignée"}
                       </Typography>

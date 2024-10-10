@@ -20,6 +20,7 @@ export type MedicineType = {
     avisAsmr: avisAsmr,
     avisSmr: avisSmr,
     commercialized: boolean,
+    genericMedicine: CustomName,
     AMM_date: string,
     EU_number: string,
     company: string,

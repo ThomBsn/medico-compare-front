@@ -76,8 +76,8 @@ export default function Component() {
                         />
                       </Typography>
                       <Typography variant="body1" className="mb-2">
-                        <span className="font-semibold">Autorisation:</span>{" "}
-                        {medicine?.autorisation.name ?? "non renseignée"}
+                        <span className="font-semibold">Médicament générique:</span>{" "}
+                        {medicine?.genericMedicine?.name ?? "non renseignée"}
                       </Typography>
                     </div>
         
